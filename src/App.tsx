@@ -1,6 +1,6 @@
 import { useState } from "react";
 import GlobalStyle from "./styles/global";
-import Paused from "./pages/Store/PausedExample";
+import MainScreen from "./pages";
 
 enum Pages {
   Main,
@@ -10,7 +10,7 @@ function App() {
   return (
     <>
       <GlobalStyle />
-      <Paused />
+      <MainScreen />
     </>
   );
 }
