@@ -19,8 +19,8 @@ type LegoProps = JSX.IntrinsicElements["group"] & {
 export function Lego2x2({ color, ...props }: LegoProps) {
   const { nodes, materials } = useGLTF("/lego_2x2.glb") as GLTFResult;
 
-  const proportions: Triplet | undefined = [2, 1, 2];
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+  const proportions = [2, 1, 2] as Triplet;
   const [ref] = useBox(
     () => ({
       args: proportions,
@@ -40,11 +40,12 @@ export function Lego2x2({ color, ...props }: LegoProps) {
 
   return (
     <mesh
-      ref={ref as React.Ref<THREE.Mesh>}
       castShadow
       receiveShadow
       geometry={nodes.lego_2x2.geometry}
       material={clonedMaterial}
+      {...props}
+      ref={ref as React.Ref<THREE.Mesh>}
     />
   );
 }

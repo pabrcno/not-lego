@@ -53,17 +53,17 @@ function Scene({ isPaused = false }): JSX.Element {
       <OrbitControls />
 
       <Physics gravity={[0, -9.81, 0]} isPaused={isPaused}>
-        {/* <Debug color="black" scale={1}> */}
-        <Ground
-          position={[0, -2, 0]}
-          rotation={[-Math.PI / 2, 0, 0]}
-          color="#202020"
-        />
+        <Debug color="black" scale={1}>
+          <Ground
+            position={[0, -2, 0]}
+            rotation={[-Math.PI / 2, 0, 0]}
+            color="#101010"
+          />
 
-        {blocks.map((block, index) => (
-          <React.Fragment key={index}>{block}</React.Fragment>
-        ))}
-        {/* </Debug> */}
+          {blocks.map((block, index) => (
+            <React.Fragment key={index}>{block}</React.Fragment>
+          ))}
+        </Debug>
       </Physics>
 
       <ambientLight intensity={3} />

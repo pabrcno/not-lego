@@ -19,7 +19,7 @@ type LegoProps = JSX.IntrinsicElements["group"] & {
 export function Lego1x1({ color, ...props }: LegoProps) {
   const { nodes, materials } = useGLTF("/lego_1x1.glb") as GLTFResult;
 
-  const proportions: Triplet = [1, 1, 1];
+  const proportions: Triplet = props.scale;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
   const [ref] = useBox(
     () => ({
