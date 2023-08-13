@@ -12,7 +12,7 @@ type GLTFResult = GLTF & {
     Lego003: THREE.Mesh;
   };
   materials: {
-    ["Material.001"]: THREE.MeshStandardMaterial;
+    ["lego_surface"]: THREE.MeshStandardMaterial;
   };
 };
 type LegoProps = JSX.IntrinsicElements["group"] & {
@@ -23,7 +23,7 @@ export function Lego2x2({ color, ...props }: LegoProps) {
   const { nodes, materials } = useGLTF("/lego_2x2.glb") as GLTFResult;
 
   // Clone the material for unique instance
-  const clonedMaterial = materials["Material.001"].clone();
+  const clonedMaterial = materials["lego_surface"].clone();
 
   // Update the material's color if a color prop is provided
   if (color) {

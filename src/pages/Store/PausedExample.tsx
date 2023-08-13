@@ -26,7 +26,7 @@ function Ground({ color, ...props }: GroundProps): JSX.Element {
 }
 
 function Crate(props: BoxProps & { color: string }): JSX.Element {
-  const proportions = [3, 1.25, 2.1];
+  const proportions = [2.2, 1.35, 2.1];
   const [ref, api] = useBox(
     () => ({ args: proportions, mass: 1, ...props }),
     useRef<Mesh>(null)
@@ -34,21 +34,21 @@ function Crate(props: BoxProps & { color: string }): JSX.Element {
 
   return (
     <mesh ref={ref}>
-      <Lego2x2 position={[-0.5, -0.5, 0.5]} color={props.color} />
+      <Lego2x2 position={[-0.5, -0.7, 0.5]} color={props.color} />
     </mesh>
   );
 }
 
 function Scene({ isPaused = false }): JSX.Element {
   const [blocks, setBlocks] = useState<JSX.Element[]>([]);
-  const colors = ["#7A0000", "#B47800", "#00591A", "#102C6C", "#600060"];
+  const colors = ["#690000", "#a37800", "#00490A", "#002C6C", "#200060"];
   useEffect(() => {
     const handleKeyDown = (e: any) => {
       if (e.code === "Space") {
         setBlocks([
           ...blocks,
           <Crate
-            position={[Math.random(), 20, -5]}
+            position={[Math.random(), 15, -5]}
             rotation={[0, 0, 0]}
             color={colors[Math.floor(Math.random() * colors.length)]}
           />,
@@ -65,18 +65,18 @@ function Scene({ isPaused = false }): JSX.Element {
     <>
       <OrbitControls />
 
-      <Physics gravity={[0, -8, 0]} isPaused={isPaused}>
-        {/* <Debug color="black" scale={1}> */}
-        <Ground
-          position={[0, -2, 0]}
-          rotation={[-Math.PI / 2, 0, 0]}
-          color="#101010"
-        />
+      <Physics gravity={[0, -9.81, 0]} isPaused={isPaused}>
+        <Debug color="black" scale={1}>
+          <Ground
+            position={[0, -2, 0]}
+            rotation={[-Math.PI / 2, 0, 0]}
+            color="#202020"
+          />
 
-        {blocks.map((block, index) => (
-          <React.Fragment key={index}>{block}</React.Fragment>
-        ))}
-        {/* </Debug> */}
+          {blocks.map((block, index) => (
+            <React.Fragment key={index}>{block}</React.Fragment>
+          ))}
+        </Debug>
       </Physics>
 
       <ambientLight intensity={3} />
@@ -90,8 +90,8 @@ export default function Paused() {
       <Canvas camera={{ fov: 70, position: [0, 0, 3] }} shadows>
         <directionalLight
           castShadow
-          intensity={0.7}
-          position={[5, 10, 0]}
+          intensity={1}
+          position={[0, 10, 0]}
           rotation={[0, 0, 0.2]}
         />
         <Scene />
