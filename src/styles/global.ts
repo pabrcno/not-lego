@@ -13,7 +13,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
     padding: 0;
-    background-color: #000
+    background-color: #505050
     ;
     overflow-x: hidden;
     overflow-y: hidden;
