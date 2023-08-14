@@ -20,7 +20,7 @@ type LegoProps = JSX.IntrinsicElements["group"] & {
 export function Lego1x1({ color }: LegoProps) {
   const { nodes, materials } = useGLTF("/lego_1x1.glb") as GLTFResult;
 
-  const { ref, bind } = useDraggableBox({});
+  const { ref, bind } = useDraggableBox({ soundOn: true });
   const clonedMaterial = materials["lego_surface"].clone();
   if (color) {
     clonedMaterial.color.set(color);
@@ -34,6 +34,7 @@ export function Lego1x1({ color }: LegoProps) {
       receiveShadow
       geometry={nodes.lego_1x1.geometry}
       material={clonedMaterial}
+      position={[0, 0, 0.1]}
     />
   );
 }

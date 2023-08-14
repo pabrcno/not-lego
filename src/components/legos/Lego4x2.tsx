@@ -23,6 +23,7 @@ export function Lego4x2({ color }: LegoProps) {
   const { ref, bind } = useDraggableBox({
     proportions,
     mass: 0.2,
+    soundOn: true,
   });
   const clonedMaterial = materials["lego_surface"].clone();
 

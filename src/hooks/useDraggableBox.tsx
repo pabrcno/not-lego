@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useThree } from "@react-three/fiber";
 import { useGesture } from "@use-gesture/react";
-import { PublicApi, Triplet, useBox } from "@react-three/cannon";
-import { Object3D } from "three";
+import { CollideEvent, Triplet, useBox } from "@react-three/cannon";
 
 interface UseDraggableBoxProps {
   mass?: number;
   friction?: number;
   restitution?: number;
   proportions?: Triplet;
+  soundOn?: boolean;
 }
 
 export const useDraggableBox = (props: UseDraggableBoxProps) => {
@@ -21,16 +21,31 @@ export const useDraggableBox = (props: UseDraggableBoxProps) => {
 
   const { size, viewport } = useThree();
   const aspect = size.width / viewport.width;
-
-  const [position, setPosition] = useState<Triplet>([0, 0, 0]); // State to track the position of the object
-
+  const sound = useMemo(() => {
+    const collisionSound = new Audio("/lego-click.wav");
+    collisionSound.volume = 0.2;
+    return collisionSound;
+  }, []);
+  const playAudio = (e: CollideEvent) => {
+    props.soundOn &&
+      e.body.name === "lego" &&
+      e.contact.impactVelocity > 1.5 &&
+      sound.play().catch(console.error);
+  };
   const [isDragging, setIsDragging] = useState(false); // State to track if the object is being dragged
   const [ref, api] = useBox(() => ({
     args: proportions,
     mass,
+
     friction,
     restitution,
+    onCollide: playAudio,
   }));
+
+  useEffect(() => {
+    if (!ref.current) return;
+    ref.current.name = "lego";
+  }, [ref]);
 
   const bind = useGesture({
     onDragStart: () => {

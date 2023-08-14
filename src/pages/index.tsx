@@ -2,29 +2,37 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import type { PlaneProps } from "@react-three/cannon";
+import type { CollideEvent, PlaneProps } from "@react-three/cannon";
 import { Debug, Physics, usePlane } from "@react-three/cannon";
 import { Plane } from "@react-three/drei";
 import type { MeshStandardMaterialProps } from "@react-three/fiber";
 import { Canvas } from "@react-three/fiber";
-import React from "react";
-import { useEffect, useRef, useState } from "react";
-import { type Mesh } from "three";
+import React, { useMemo } from "react";
+import { useEffect, useState } from "react";
 
 import { Lego1x1, Lego2x2, Lego4x2 } from "../components/legos";
+import { Mesh } from "three";
 
 type GroundProps = Pick<MeshStandardMaterialProps, "color"> & PlaneProps;
 
 function Ground({ color, ...props }: GroundProps): JSX.Element {
-  const [ref] = usePlane(() => ({ ...props }), useRef<Mesh>(null));
+  const sound = useMemo(() => {
+    const collisionSound = new Audio("/lego-fall.wav");
+    collisionSound.volume = 0.1;
+    return collisionSound;
+  }, []);
+  const playAudio = (e: CollideEvent) => {
+    e.contact.impactVelocity > 2 && sound.play().catch(console.error);
+  };
+
+  const [ref] = usePlane(() => ({ ...props, onCollide: playAudio }));
 
   return (
-    <Plane args={[1000, 1000]} ref={ref} receiveShadow>
+    <Plane args={[1000, 1000]} ref={ref as React.Ref<Mesh>} receiveShadow>
       <meshStandardMaterial color={color} />
     </Plane>
   );
 }
-
 function Scene({ isPaused = false }): JSX.Element {
   const [blocks, setBlocks] = useState<JSX.Element[]>([]);
   const colors = [
@@ -36,17 +44,43 @@ function Scene({ isPaused = false }): JSX.Element {
     "#D05098",
   ];
   const legos = [Lego1x1, Lego2x2, Lego4x2];
+
   useEffect(() => {
     const handleKeyDown = (e: any) => {
-      if (e.code === "Space") {
-        setBlocks([
-          ...blocks,
-          React.createElement(legos[Math.floor(Math.random() * legos.length)], {
-            key: blocks.length,
-            position: [0, 10, 0],
-            color: colors[Math.floor(Math.random() * colors.length)],
-          }),
-        ]);
+      switch (e.code) {
+        case "Digit1":
+          setBlocks([
+            ...blocks,
+            React.createElement(legos[0], {
+              key: blocks.length,
+
+              color: colors[Math.floor(Math.random() * colors.length)],
+            }),
+          ]);
+          break;
+        case "Digit2":
+          setBlocks([
+            ...blocks,
+            React.createElement(legos[1], {
+              key: blocks.length,
+
+              color: colors[Math.floor(Math.random() * colors.length)],
+            }),
+          ]);
+          break;
+        case "Digit3":
+          setBlocks([
+            ...blocks,
+            React.createElement(legos[2], {
+              key: blocks.length,
+
+              color: colors[Math.floor(Math.random() * colors.length)],
+            }),
+          ]);
+          break;
+
+        default:
+          break;
       }
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -60,7 +94,7 @@ function Scene({ isPaused = false }): JSX.Element {
       <Physics gravity={[0, -9.81, 0]} isPaused={isPaused}>
         {/* <Debug color="black" scale={1}> */}
         <Ground
-          position={[0, -2, 0]}
+          position={[0, -3, 0]}
           rotation={[-Math.PI / 2, 0, 0]}
           color="#101010"
         />
@@ -79,7 +113,7 @@ function Scene({ isPaused = false }): JSX.Element {
 export default function MainScreen() {
   return (
     <div style={{ height: "100vh", width: "100%" }}>
-      <Canvas camera={{ fov: 70, position: [2, 2, 10] }} shadows>
+      <Canvas camera={{ fov: 70, position: [0, 2, 10] }} shadows>
         <directionalLight
           castShadow
           intensity={2}
