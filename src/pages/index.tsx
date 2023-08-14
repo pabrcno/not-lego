@@ -36,7 +36,7 @@ function Scene({ isPaused = false }): JSX.Element {
       <Physics gravity={[0, -9.81, 0]} isPaused={isPaused}>
         {/* <Debug color="black" scale={1}> */}
         <Ground
-          position={[0, -3, 0]}
+          position={[0, -5, 0]}
           rotation={[-Math.PI / 2, 0, 0]}
           color="#101010"
         />

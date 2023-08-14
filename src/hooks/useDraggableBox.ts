@@ -32,16 +32,15 @@ export const useDraggableBox = (props: UseDraggableBoxProps) => {
   }));
 
   const bind = useGesture({
-    onDragStart: ({ offset: [x, y] }) => {
+    onDragStart: () => {
       setIsDragging(true); // Set drag state to true
       api.mass.set(0);
       api.rotation.set(0, ref.current?.rotation.y ?? 0, 0);
       api.velocity.set(0, 0, 0);
       api.angularVelocity.set(0, 0, 0);
-      api.position.set(...[x / aspect, -y / aspect, 0]);
     },
     onDrag: ({ offset: [x, y] }) => {
-      api.position.set(...[x / aspect, -y / aspect, 0]);
+      api.position.set(...[x / aspect, -y / 1.5 / 1 / aspect, 0]);
     },
     onDragEnd: () => {
       setIsDragging(false); // Set drag state to false
