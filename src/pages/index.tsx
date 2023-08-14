@@ -1,5 +1,5 @@
 import type { CollideEvent, PlaneProps } from "@react-three/cannon";
-import { Physics, usePlane } from "@react-three/cannon";
+import { Debug, Physics, usePlane } from "@react-three/cannon";
 import { Plane } from "@react-three/drei";
 import type { MeshStandardMaterialProps } from "@react-three/fiber";
 import { Canvas } from "@react-three/fiber";
@@ -34,17 +34,17 @@ function Scene({ isPaused = false }): JSX.Element {
   return (
     <>
       <Physics gravity={[0, -9.81, 0]} isPaused={isPaused}>
-        {/* <Debug color="black" scale={1}> */}
-        <Ground
-          position={[0, -3, 0]}
-          rotation={[-Math.PI / 2, 0, 0]}
-          color="#101010"
-        />
+        <Debug color="black" scale={1}>
+          <Ground
+            position={[0, -3, 0]}
+            rotation={[-Math.PI / 2, 0, 0]}
+            color="#101010"
+          />
 
-        {legos.map((lego, index) => (
-          <React.Fragment key={index}>{lego}</React.Fragment>
-        ))}
-        {/* </Debug> */}
+          {legos.map((lego, index) => (
+            <React.Fragment key={index}>{lego}</React.Fragment>
+          ))}
+        </Debug>
       </Physics>
 
       <ambientLight intensity={1} />
@@ -59,7 +59,7 @@ export default function MainScreen() {
         <directionalLight
           castShadow
           intensity={2}
-          position={[0, 10, 0]}
+          position={[0, 20, 0]}
           rotation={[0, 0, 0.2]}
         />
         <Scene />

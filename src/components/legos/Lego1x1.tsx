@@ -2,6 +2,7 @@ import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 
 import { useLego } from "../../hooks/useLego";
+import { Triplet } from "@react-three/cannon";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -14,12 +15,21 @@ type GLTFResult = GLTF & {
 
 type LegoProps = JSX.IntrinsicElements["group"] & {
   color?: string | THREE.Color;
+  scale?: [number, number, number];
 };
 
-export function Lego1x1({ color }: LegoProps) {
+export function Lego1x1({ color, scale, ...props }: LegoProps) {
   const { nodes, materials } = useGLTF("/lego_1x1.glb") as GLTFResult;
+  const baseProportions = [1, 1, 1];
+  const adjustedProportions = scale
+    ? (baseProportions.map((prop, idx) => prop * scale[idx]) as Triplet)
+    : baseProportions;
 
-  const { ref, bind } = useLego({ soundOn: true });
+  const { ref, bind } = useLego({
+    proportions: adjustedProportions as Triplet,
+
+    soundOn: true,
+  });
   const clonedMaterial = materials["lego_surface"].clone();
   if (color) {
     clonedMaterial.color.set(color);
@@ -33,7 +43,8 @@ export function Lego1x1({ color }: LegoProps) {
       receiveShadow
       geometry={nodes.lego_1x1.geometry}
       material={clonedMaterial}
-      position={[0, 0, 0.1]}
+      position={props.position}
+      scale={scale}
     />
   );
 }

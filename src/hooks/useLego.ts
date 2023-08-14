@@ -3,13 +3,19 @@ import { UseDraggableBoxProps, useDraggableBox } from "./useDraggableBox";
 import { useEffect, useMemo } from "react";
 import { CollideEvent } from "@react-three/cannon";
 import { useFrame } from "@react-three/fiber";
+import { debounce } from "lodash";
 
 type UseLegoProps = UseDraggableBoxProps & {
   soundOn?: boolean;
 };
 
 export const useLego = (props: UseLegoProps) => {
+  const debouncedPlay = debounce(() => {
+    sound.play().catch(console.error);
+  }, 0); // 500ms debounce interval
+
   const playAudio = (e: CollideEvent) => {
+    console.log(e.contact.impactVelocity);
     if (
       !props.soundOn ||
       e.body.name !== "lego" ||
@@ -24,11 +30,14 @@ export const useLego = (props: UseLegoProps) => {
     if (!localContactPoint) return;
     // Check if the contact point's y-value is approximately equal to half the height (the top of the box)
     const isTopCollision =
-      Math.abs(localContactPoint.y - (props.proportions?.[1] ?? 1) / 2) < 0.1; // Use a small threshold value (0.1 in this case)
+      Math.abs(
+        localContactPoint.y * (props.proportions?.[1] ?? 1) -
+          (props.proportions?.[1] ?? 1) / 2
+      ) < 0.1; // Use a small threshold value (0.1 in this case)
 
     // Play the sound if it's a top collision
     if (isTopCollision) {
-      sound.play().catch(console.error);
+      debouncedPlay();
     }
   };
 

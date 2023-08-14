@@ -15,14 +15,16 @@
     "@react-three/drei": "^9.78.1",
     "@react-three/fiber": "^8.13.4",
     "@types/three": "^0.153.0",
+    "@use-gesture/react": "10.2.27",
     "leva": "^0.9.35",
+    "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "styled-components": "^6.0.3",
-    "three": "^0.154.0",
-    "@use-gesture/react": "10.2.27"
+    "three": "^0.154.0"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.197",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "@typescript-eslint/eslint-plugin": "^5.61.0",

@@ -13,14 +13,18 @@ type GLTFResult = GLTF & {
 
 type LegoProps = JSX.IntrinsicElements["group"] & {
   color?: string | THREE.Color;
+  scale?: [number, number, number];
 };
 
-export function Lego4x2({ color }: LegoProps) {
+export function Lego4x2({ color, scale, ...props }: LegoProps) {
   const { nodes, materials } = useGLTF("/lego_4x2.glb") as GLTFResult;
 
-  const proportions: Triplet = [2, 1, 4];
+  const baseProportions = [2, 1, 4];
+  const adjustedProportions = scale
+    ? (baseProportions.map((prop, idx) => prop * scale[idx]) as Triplet)
+    : baseProportions;
   const { ref, bind } = useLego({
-    proportions,
+    proportions: adjustedProportions as Triplet,
     mass: 0.2,
     soundOn: true,
   });
@@ -33,11 +37,13 @@ export function Lego4x2({ color }: LegoProps) {
 
   return (
     <mesh
+      scale={scale}
       ref={ref as React.Ref<THREE.Mesh>}
       castShadow
       receiveShadow
       geometry={nodes.lego_4x2.geometry}
       material={clonedMaterial}
+      position={props.position}
       {...(bind() as JSX.IntrinsicElements["mesh"])}
     />
   );

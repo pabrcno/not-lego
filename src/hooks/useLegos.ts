@@ -22,6 +22,7 @@ export const useLegos = () => {
             ...legos,
             React.createElement(meshes[0], {
               key: legos.length,
+              scale: [0.5, 0.5, 0.5],
 
               color: colors[Math.floor(Math.random() * colors.length)],
             }),
@@ -32,7 +33,7 @@ export const useLegos = () => {
             ...legos,
             React.createElement(meshes[1], {
               key: legos.length,
-
+              scale: [0.5, 0.5, 0.5],
               color: colors[Math.floor(Math.random() * colors.length)],
             }),
           ]);
@@ -42,6 +43,7 @@ export const useLegos = () => {
             ...legos,
             React.createElement(meshes[2], {
               key: legos.length,
+              scale: [0.5, 0.5, 0.5],
 
               color: colors[Math.floor(Math.random() * colors.length)],
             }),
