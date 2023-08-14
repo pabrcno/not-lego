@@ -13,15 +13,18 @@ type GLTFResult = GLTF & {
 
 type LegoProps = JSX.IntrinsicElements["group"] & {
   color?: string | THREE.Color;
+  scale?: [number, number, number];
 };
 
-export function Lego2x2({ color }: LegoProps) {
+export function Lego2x2({ color, scale, ...props }: LegoProps) {
   const { nodes, materials } = useGLTF("/lego_2x2.glb") as GLTFResult;
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
-  const proportions = [2, 1, 2] as Triplet;
+  const baseProportions = [2, 1, 2];
+  const adjustedProportions = scale
+    ? (baseProportions.map((prop, idx) => prop * scale[idx]) as Triplet)
+    : baseProportions;
   const { ref, bind } = useLego({
-    proportions,
+    proportions: adjustedProportions as Triplet,
     mass: 0.1,
     soundOn: true,
   });
@@ -39,6 +42,8 @@ export function Lego2x2({ color }: LegoProps) {
       geometry={nodes.lego_2x2.geometry}
       material={clonedMaterial}
       ref={ref as React.Ref<THREE.Mesh>}
+      scale={scale}
+      position={props.position}
       {...(bind() as JSX.IntrinsicElements["mesh"])}
     />
   );
