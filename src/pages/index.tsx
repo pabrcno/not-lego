@@ -34,17 +34,17 @@ function Scene({ isPaused = false }): JSX.Element {
   return (
     <>
       <Physics gravity={[0, -9.81, 0]} isPaused={isPaused}>
-        <Debug color="black" scale={1}>
-          <Ground
-            position={[0, -3, 0]}
-            rotation={[-Math.PI / 2, 0, 0]}
-            color="#101010"
-          />
+        {/* <Debug color="black" scale={1}> */}
+        <Ground
+          position={[0, -3, 0]}
+          rotation={[-Math.PI / 2, 0, 0]}
+          color="#101010"
+        />
 
-          {legos.map((lego, index) => (
-            <React.Fragment key={index}>{lego}</React.Fragment>
-          ))}
-        </Debug>
+        {legos.map((lego, index) => (
+          <React.Fragment key={index}>{lego}</React.Fragment>
+        ))}
+        {/* </Debug> */}
       </Physics>
 
       <ambientLight intensity={1} />

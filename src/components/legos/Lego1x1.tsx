@@ -40,7 +40,6 @@ export function Lego1x1({ color, scale, ...props }: LegoProps) {
       ref={ref as React.Ref<THREE.Mesh>}
       {...(bind() as JSX.IntrinsicElements["mesh"])}
       castShadow
-      receiveShadow
       geometry={nodes.lego_1x1.geometry}
       material={clonedMaterial}
       position={props.position}

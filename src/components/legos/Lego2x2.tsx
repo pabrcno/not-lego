@@ -38,7 +38,6 @@ export function Lego2x2({ color, scale, ...props }: LegoProps) {
   return (
     <mesh
       castShadow
-      receiveShadow
       geometry={nodes.lego_2x2.geometry}
       material={clonedMaterial}
       ref={ref as React.Ref<THREE.Mesh>}
