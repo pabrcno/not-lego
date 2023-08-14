@@ -1,9 +1,6 @@
-import * as THREE from "three";
-
 import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 import { Triplet } from "@react-three/cannon";
-import { useDraggableBox } from "../../hooks/useDraggableBox";
 import { useLego } from "../../hooks/useLego";
 type GLTFResult = GLTF & {
   nodes: {
@@ -42,7 +39,7 @@ export function Lego2x2({ color }: LegoProps) {
       geometry={nodes.lego_2x2.geometry}
       material={clonedMaterial}
       ref={ref as React.Ref<THREE.Mesh>}
-      {...bind()}
+      {...(bind() as JSX.IntrinsicElements["mesh"])}
     />
   );
 }

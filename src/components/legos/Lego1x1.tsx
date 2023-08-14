@@ -1,8 +1,6 @@
-import * as THREE from "three";
 import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 
-import { useDraggableBox } from "../../hooks/useDraggableBox";
 import { useLego } from "../../hooks/useLego";
 
 type GLTFResult = GLTF & {
@@ -30,7 +28,7 @@ export function Lego1x1({ color }: LegoProps) {
   return (
     <mesh
       ref={ref as React.Ref<THREE.Mesh>}
-      {...bind()}
+      {...(bind() as JSX.IntrinsicElements["mesh"])}
       castShadow
       receiveShadow
       geometry={nodes.lego_1x1.geometry}
