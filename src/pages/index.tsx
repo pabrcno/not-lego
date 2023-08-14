@@ -55,7 +55,7 @@ function Scene({ isPaused = false }): JSX.Element {
 export default function MainScreen() {
   return (
     <div style={{ height: "100vh", width: "100%" }}>
-      <Canvas camera={{ fov: 70, position: [0, 2, 10] }} shadows>
+      <Canvas camera={{ fov: 70, position: [0, 0, 10] }} shadows>
         <directionalLight
           castShadow
           intensity={2}

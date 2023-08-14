@@ -15,7 +15,6 @@ export const useLego = (props: UseLegoProps) => {
   }, 0); // 500ms debounce interval
 
   const playAudio = (e: CollideEvent) => {
-    console.log(e.contact.impactVelocity);
     if (
       !props.soundOn ||
       e.body.name !== "lego" ||
