@@ -3,6 +3,7 @@ import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 
 import { useDraggableBox } from "../../hooks/useDraggableBox";
+import { useLego } from "../../hooks/useLego";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -20,7 +21,7 @@ type LegoProps = JSX.IntrinsicElements["group"] & {
 export function Lego1x1({ color }: LegoProps) {
   const { nodes, materials } = useGLTF("/lego_1x1.glb") as GLTFResult;
 
-  const { ref, bind } = useDraggableBox({ soundOn: true });
+  const { ref, bind } = useLego({ soundOn: true });
   const clonedMaterial = materials["lego_surface"].clone();
   if (color) {
     clonedMaterial.color.set(color);

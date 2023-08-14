@@ -1,59 +1,44 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useThree } from "@react-three/fiber";
 import { useGesture } from "@use-gesture/react";
 import { CollideEvent, Triplet, useBox } from "@react-three/cannon";
 
-interface UseDraggableBoxProps {
+export type UseDraggableBoxProps = {
   mass?: number;
   friction?: number;
   restitution?: number;
   proportions?: Triplet;
-  soundOn?: boolean;
-}
+  onCollide?: (e: CollideEvent) => void;
+};
 
 export const useDraggableBox = (props: UseDraggableBoxProps) => {
   const {
     mass = 0.025,
-    friction = 100,
+    friction = 200,
     restitution = 0,
     proportions = [1, 1, 1],
   } = props;
 
   const { size, viewport } = useThree();
   const aspect = size.width / viewport.width;
-  const sound = useMemo(() => {
-    const collisionSound = new Audio("/lego-click.wav");
-    collisionSound.volume = 0.2;
-    return collisionSound;
-  }, []);
-  const playAudio = (e: CollideEvent) => {
-    props.soundOn &&
-      e.body.name === "lego" &&
-      e.contact.impactVelocity > 1.5 &&
-      sound.play().catch(console.error);
-  };
+
   const [isDragging, setIsDragging] = useState(false); // State to track if the object is being dragged
   const [ref, api] = useBox(() => ({
     args: proportions,
     mass,
-
+    onCollide: props.onCollide,
     friction,
     restitution,
-    onCollide: playAudio,
   }));
 
-  useEffect(() => {
-    if (!ref.current) return;
-    ref.current.name = "lego";
-  }, [ref]);
-
   const bind = useGesture({
-    onDragStart: () => {
+    onDragStart: ({ offset: [x, y] }) => {
       setIsDragging(true); // Set drag state to true
       api.mass.set(0);
       api.rotation.set(0, ref.current?.rotation.y ?? 0, 0);
       api.velocity.set(0, 0, 0);
       api.angularVelocity.set(0, 0, 0);
+      api.position.set(...[x / aspect, -y / aspect, 0]);
     },
     onDrag: ({ offset: [x, y] }) => {
       api.position.set(...[x / aspect, -y / aspect, 0]);
@@ -86,7 +71,8 @@ export const useDraggableBox = (props: UseDraggableBoxProps) => {
       // Cleanup event listener on component unmount
       window.removeEventListener("keydown", handleKeydown);
     };
-  }, [ref, isDragging]); // Add isDragging as a dependency
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ref, isDragging]);
 
-  return { ref, bind };
+  return { ref, api, bind, isDragging };
 };

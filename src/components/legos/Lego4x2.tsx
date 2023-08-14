@@ -3,6 +3,7 @@ import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 import { Triplet } from "@react-three/cannon";
 import { useDraggableBox } from "../../hooks/useDraggableBox";
+import { useLego } from "../../hooks/useLego";
 type GLTFResult = GLTF & {
   nodes: {
     lego_4x2: THREE.Mesh;
@@ -20,7 +21,7 @@ export function Lego4x2({ color }: LegoProps) {
   const { nodes, materials } = useGLTF("/lego_4x2.glb") as GLTFResult;
 
   const proportions: Triplet = [2, 1, 4];
-  const { ref, bind } = useDraggableBox({
+  const { ref, bind } = useLego({
     proportions,
     mass: 0.2,
     soundOn: true,
