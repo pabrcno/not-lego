@@ -1,8 +1,9 @@
 import * as THREE from "three";
-import { useRef } from "react";
+
 import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
-import { Triplet, useBox } from "@react-three/cannon";
+import { Triplet } from "@react-three/cannon";
+import { useDraggableBox } from "../../hooks/useDraggableBox";
 type GLTFResult = GLTF & {
   nodes: {
     lego_2x2: THREE.Mesh;
@@ -16,21 +17,15 @@ type LegoProps = JSX.IntrinsicElements["group"] & {
   color?: string | THREE.Color;
 };
 
-export function Lego2x2({ color, ...props }: LegoProps) {
+export function Lego2x2({ color }: LegoProps) {
   const { nodes, materials } = useGLTF("/lego_2x2.glb") as GLTFResult;
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
   const proportions = [2, 1, 2] as Triplet;
-  const [ref] = useBox(
-    () => ({
-      args: proportions,
-      mass: 0.025,
-      friction: 100,
-      restitution: 0,
-      ...props,
-    }),
-    useRef<THREE.Mesh>(null)
-  );
+  const { ref, bind } = useDraggableBox({
+    proportions,
+    mass: 0.1,
+  });
   const clonedMaterial = materials["lego_surface"].clone();
 
   // Update the material's color if a color prop is provided
@@ -44,8 +39,8 @@ export function Lego2x2({ color, ...props }: LegoProps) {
       receiveShadow
       geometry={nodes.lego_2x2.geometry}
       material={clonedMaterial}
-      {...props}
       ref={ref as React.Ref<THREE.Mesh>}
+      {...bind()}
     />
   );
 }

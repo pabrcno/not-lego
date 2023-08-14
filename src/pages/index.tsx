@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import type { PlaneProps } from "@react-three/cannon";
 import { Debug, Physics, usePlane } from "@react-three/cannon";
-import { OrbitControls, Plane } from "@react-three/drei";
+import { Plane } from "@react-three/drei";
 import type { MeshStandardMaterialProps } from "@react-three/fiber";
 import { Canvas } from "@react-three/fiber";
 import React from "react";
@@ -27,7 +27,14 @@ function Ground({ color, ...props }: GroundProps): JSX.Element {
 
 function Scene({ isPaused = false }): JSX.Element {
   const [blocks, setBlocks] = useState<JSX.Element[]>([]);
-  const colors = ["#690000", "#a37800", "#00490A", "#002C6C", "#200060"];
+  const colors = [
+    "#B40000",
+    "#FCAC00",
+    "#00852B",
+    "#1E5AA8",
+    "#069D9F",
+    "#D05098",
+  ];
   const legos = [Lego1x1, Lego2x2, Lego4x2];
   useEffect(() => {
     const handleKeyDown = (e: any) => {
@@ -50,23 +57,21 @@ function Scene({ isPaused = false }): JSX.Element {
 
   return (
     <>
-      <OrbitControls />
-
       <Physics gravity={[0, -9.81, 0]} isPaused={isPaused}>
-        <Debug color="black" scale={1}>
-          <Ground
-            position={[0, -2, 0]}
-            rotation={[-Math.PI / 2, 0, 0]}
-            color="#101010"
-          />
+        {/* <Debug color="black" scale={1}> */}
+        <Ground
+          position={[0, -2, 0]}
+          rotation={[-Math.PI / 2, 0, 0]}
+          color="#101010"
+        />
 
-          {blocks.map((block, index) => (
-            <React.Fragment key={index}>{block}</React.Fragment>
-          ))}
-        </Debug>
+        {blocks.map((block, index) => (
+          <React.Fragment key={index}>{block}</React.Fragment>
+        ))}
+        {/* </Debug> */}
       </Physics>
 
-      <ambientLight intensity={3} />
+      <ambientLight intensity={1} />
     </>
   );
 }
@@ -74,10 +79,10 @@ function Scene({ isPaused = false }): JSX.Element {
 export default function MainScreen() {
   return (
     <div style={{ height: "100vh", width: "100%" }}>
-      <Canvas camera={{ fov: 70, position: [0, 0, 3] }} shadows>
+      <Canvas camera={{ fov: 70, position: [2, 2, 10] }} shadows>
         <directionalLight
           castShadow
-          intensity={1}
+          intensity={2}
           position={[0, 10, 0]}
           rotation={[0, 0, 0.2]}
         />
