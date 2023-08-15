@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useThree } from "@react-three/fiber";
 import { useGesture } from "@use-gesture/react";
 import { CollideEvent, Triplet, useBox } from "@react-three/cannon";
+import { Vector3 } from "three";
 
 export type UseDraggableBoxProps = {
   mass?: number;
@@ -14,12 +15,12 @@ export type UseDraggableBoxProps = {
 export const useDraggableBox = (props: UseDraggableBoxProps) => {
   const {
     mass = 0.025,
-    friction = 200,
+    friction = 10,
     restitution = 0,
     proportions = [1, 1, 1],
   } = props;
 
-  const { size, viewport } = useThree();
+  const { size, viewport, camera } = useThree();
   const aspect = size.width / viewport.width;
 
   const [isDragging, setIsDragging] = useState(false); // State to track if the object is being dragged
@@ -41,11 +42,23 @@ export const useDraggableBox = (props: UseDraggableBoxProps) => {
       api.angularVelocity.set(0, 0, 0);
     },
     onDrag: ({ offset: [x, y] }) => {
+      if (!ref.current || !isDragging) return; // Check if the object is being dragged
+      const forward = new Vector3(0, 1, 0).applyQuaternion(camera.quaternion);
+      const right = new Vector3(1, 0, 0).applyQuaternion(camera.quaternion);
+
+      // Use the vectors to determine the drag direction in 3D space
+      const dragOffset = new Vector3()
+        .add(forward.multiplyScalar(-y / aspect))
+        .add(right.multiplyScalar(x / aspect));
+
+      // Adjust the position
       api.position.set(
-        ...[x / aspect, -y / aspect, ref.current?.position.z ?? 0]
+        ref.current.position.x + dragOffset.x,
+        ref.current.position.y + dragOffset.y,
+        ref.current.position.z + dragOffset.z
       );
-      console.log(x, y);
-      setDragPosition([x / aspect, -y / aspect]);
+
+      setDragPosition([ref.current.position.x, ref.current.position.y]);
     },
     onDragEnd: () => {
       setIsDragging(false); // Set drag state to false
@@ -64,14 +77,7 @@ export const useDraggableBox = (props: UseDraggableBoxProps) => {
         case "d":
           api.rotation.set(0, (ref.current.rotation.y += 0.1), 0);
           break;
-        case "w":
-          api.position.set(xd, yd, (ref.current.position.z -= 0.1));
 
-          break;
-
-        case "s":
-          api.position.set(xd, yd, (ref.current.position.z += 0.1));
-          break;
         default:
           break;
       }

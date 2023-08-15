@@ -40,7 +40,7 @@ function Scene({ isPaused = false }): JSX.Element {
 
       <ambientLight intensity={1} />
       <OrbitControls
-        enableRotate={false}
+        enableRotate={true}
         mouseButtons={{
           MIDDLE: THREE.MOUSE.PAN,
           RIGHT: THREE.MOUSE.ROTATE,
@@ -53,7 +53,7 @@ function Scene({ isPaused = false }): JSX.Element {
 export default function MainScreen() {
   return (
     <div style={{ height: "100vh", width: "100%" }}>
-      <Canvas camera={{ fov: 70, position: [0, 0, 10] }} shadows>
+      <Canvas camera={{ fov: 70, position: [0, 0, 15] }} shadows>
         <Scene />
       </Canvas>
     </div>

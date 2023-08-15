@@ -1,7 +1,6 @@
 import * as THREE from "three";
-import { useState, useEffect, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useDraggableBox, UseDraggableBoxProps } from "./useDraggableBox";
-import { useFrame } from "@react-three/fiber";
 import { debounce } from "lodash";
 import { CollideEvent } from "@react-three/cannon";
 
@@ -10,12 +9,9 @@ type UseLegoProps = UseDraggableBoxProps & {
 };
 
 export const useLego = (props: UseLegoProps) => {
-  const [connected, setConnected] = useState(false);
-
   const debouncedPlay = debounce(() => {
     sound.play().catch(console.error);
   }, 50);
-
   const playAudio = (e: CollideEvent) => {
     if (
       !props.soundOn ||
@@ -39,10 +35,40 @@ export const useLego = (props: UseLegoProps) => {
       debouncedPlay();
     }
   };
+  const magneticForce = 10; // Define a constant for the strength of the magnetic attraction.
+
+  const applyMagneticForce = (e: CollideEvent) => {
+    if (!ref.current) return;
+    const otherBox = e.body;
+
+    const ourBoxPosition = ref.current.position.clone();
+    const otherBoxPosition = otherBox.position.clone();
+
+    const isAbove = ourBoxPosition.y > otherBoxPosition.y;
+
+    // Check if the boxes are in proximity
+    const distance = isAbove
+      ? ourBoxPosition.y - (props.proportions?.[1] ?? 1) - otherBoxPosition.y
+      : otherBoxPosition.y - (props.proportions?.[1] ?? 1) - ourBoxPosition.y;
+
+    if (distance < 0.1) {
+      // 0.1 is a threshold, adjust based on your requirements
+      const forceMagnitude = magneticForce / (distance + 0.01); // Add a small value to avoid division by zero
+
+      const forceDirection = new THREE.Vector3(0, isAbove ? -1 : 1, 0); // Up or down depending on position
+      const force = forceDirection.multiplyScalar(forceMagnitude);
+
+      // Apply the forces
+      api.applyForce(force.toArray(), ourBoxPosition.toArray());
+    }
+  };
 
   const { ref, api, bind, isDragging } = useDraggableBox({
     ...props,
-    onCollide: playAudio,
+    onCollide: (e) => {
+      playAudio(e);
+      applyMagneticForce(e);
+    },
   });
 
   useEffect(() => {
@@ -55,51 +81,6 @@ export const useLego = (props: UseLegoProps) => {
     collisionSound.volume = 0.05;
     return collisionSound;
   }, []);
-
-  const magnetPoint = new THREE.Vector3(0, 5, 0);
-
-  useFrame(() => {
-    if (ref.current && !isDragging && props.proportions) {
-      const boxSizeY = props.proportions[1];
-      const topFaceCenter = new THREE.Vector3(
-        ref.current.position.x,
-        ref.current.position.y + boxSizeY / 2,
-        ref.current.position.z
-      );
-
-      const direction = new THREE.Vector3().subVectors(
-        magnetPoint,
-        topFaceCenter
-      );
-      const distance = direction.length();
-
-      if (distance < 0.5 && !connected) {
-        api.position.set(
-          ref.current.position.x,
-          magnetPoint.y - boxSizeY / 2,
-          ref.current.position.z
-        );
-        setConnected(true); // Connect the bricks
-      }
-
-      // If bricks are connected, move them together
-      if (connected) {
-        api.position.set(
-          ref.current.position.x,
-          magnetPoint.y - boxSizeY / 2,
-          ref.current.position.z
-        );
-      }
-
-      if (isDragging && connected) {
-        const distanceAfterDrag = topFaceCenter.distanceTo(magnetPoint);
-
-        if (distanceAfterDrag > 0.7) {
-          setConnected(false);
-        }
-      }
-    }
-  });
 
   return { ref, bind };
 };
