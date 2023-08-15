@@ -2,6 +2,7 @@ import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 import { Triplet } from "@react-three/cannon";
 import { useLego } from "../../hooks/useLego";
+import { AnimatedLegoWrapper } from "./AnimatedLegoWrapper";
 type GLTFResult = GLTF & {
   nodes: {
     lego_2x2: THREE.Mesh;
@@ -19,7 +20,7 @@ type LegoProps = JSX.IntrinsicElements["group"] & {
 export function Lego2x2({ color, scale, ...props }: LegoProps) {
   const { nodes, materials } = useGLTF("/lego_2x2.glb") as GLTFResult;
 
-  const baseProportions = [2, 1, 2];
+  const baseProportions: [number, number, number] = [2, 1, 2];
   const adjustedProportions = scale
     ? (baseProportions.map((prop, idx) => prop * scale[idx]) as Triplet)
     : baseProportions;
@@ -36,15 +37,17 @@ export function Lego2x2({ color, scale, ...props }: LegoProps) {
   }
 
   return (
-    <mesh
-      castShadow
-      geometry={nodes.lego_2x2.geometry}
-      material={clonedMaterial}
-      ref={ref as React.Ref<THREE.Mesh>}
-      scale={scale}
-      position={props.position}
-      {...(bind() as JSX.IntrinsicElements["mesh"])}
-    />
+    <AnimatedLegoWrapper>
+      <mesh
+        castShadow
+        geometry={nodes.lego_2x2.geometry}
+        material={clonedMaterial}
+        ref={ref as React.Ref<THREE.Mesh>}
+        scale={scale}
+        position={props.position}
+        {...(bind() as JSX.IntrinsicElements["mesh"])}
+      />
+    </AnimatedLegoWrapper>
   );
 }
 
