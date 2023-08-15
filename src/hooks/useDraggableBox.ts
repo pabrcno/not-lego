@@ -30,7 +30,7 @@ export const useDraggableBox = (props: UseDraggableBoxProps) => {
     friction,
     restitution,
   }));
-  const [[xd, yd, zd], setDragPosition] = useState<Triplet>([0, 0, 0]);
+  const [[xd, yd], setDragPosition] = useState<[number, number]>([0, 0]);
   const bind = useGesture({
     onDragStart: () => {
       setIsDragging(true); // Set drag state to true
@@ -45,7 +45,7 @@ export const useDraggableBox = (props: UseDraggableBoxProps) => {
         ...[x / aspect, -y / aspect, ref.current?.position.z ?? 0]
       );
       console.log(x, y);
-      setDragPosition([x / aspect, -y / aspect, ref.current?.position.z ?? 0]);
+      setDragPosition([x / aspect, -y / aspect]);
     },
     onDragEnd: () => {
       setIsDragging(false); // Set drag state to false
