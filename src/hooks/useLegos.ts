@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Lego1x1, Lego2x2, Lego4x2 } from "../components/legos";
 import React from "react";
-
+import debounce from "lodash/debounce";
 export const useLegos = () => {
   const colors = [
     "#B40000",
@@ -15,7 +15,7 @@ export const useLegos = () => {
 
   const [legos, setLegos] = useState<JSX.Element[]>([]);
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
+    const handleKeyDown = debounce((e: KeyboardEvent) => {
       switch (e.code) {
         case "Digit1":
           setLegos([
@@ -23,6 +23,7 @@ export const useLegos = () => {
             React.createElement(meshes[0], {
               key: legos.length,
               // scale: [0.5, 0.5, 0.5],
+              position: [0, 10, 0],
 
               color: colors[Math.floor(Math.random() * colors.length)],
             }),
@@ -53,7 +54,8 @@ export const useLegos = () => {
         default:
           break;
       }
-    };
+    }, 200);
+
     window.addEventListener("keydown", handleKeyDown);
     return () => {
       window.removeEventListener("keydown", handleKeyDown);

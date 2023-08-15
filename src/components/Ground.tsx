@@ -11,7 +11,7 @@ type GroundProps = Pick<MeshStandardMaterialProps, "color"> & PlaneProps;
 export const Ground = ({ color, ...props }: GroundProps): JSX.Element => {
   const sound = useMemo(() => {
     const collisionSound = new Audio("/lego-fall.wav");
-    collisionSound.volume = 0.01;
+    collisionSound.volume = 0.005;
     return collisionSound;
   }, []);
   const playAudio = (e: CollideEvent) => {
