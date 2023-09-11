@@ -13,7 +13,14 @@ export const useLegos = () => {
   ];
   const meshes = [Lego1x1, Lego2x2, Lego4x2];
 
-  const [legos, setLegos] = useState<JSX.Element[]>([]);
+  const [legos, setLegos] = useState<JSX.Element[]>([
+    <Lego1x1 key={"lego1"}/>,
+    <Lego2x2 key={"lego2"}/>,
+    <Lego4x2 key={"lego3"}/>,
+    <Lego1x1 key={"lego4"}/>,
+    <Lego2x2 key={"lego5"}/>,
+    <Lego4x2 key={"lego6"}/>,
+  ]);
   useEffect(() => {
     const handleKeyDown = debounce((e: KeyboardEvent) => {
       switch (e.code) {
