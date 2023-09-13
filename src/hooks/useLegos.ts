@@ -14,12 +14,26 @@ export const useLegos = () => {
   const meshes = [Lego1x1, Lego2x2, Lego4x2];
 
   const [legos, setLegos] = useState<JSX.Element[]>([
-    <Lego1x1 key={"lego1"}/>,
-    <Lego2x2 key={"lego2"}/>,
-    <Lego4x2 key={"lego3"}/>,
-    <Lego1x1 key={"lego4"}/>,
-    <Lego2x2 key={"lego5"}/>,
-    <Lego4x2 key={"lego6"}/>,
+    React.createElement(meshes[0], {
+      key: 0,
+      // scale: [0.5, 0.5, 0.5],
+      position: [0, 10, 0],
+
+      color: colors[Math.floor(Math.random() * colors.length)],
+    }),
+
+    React.createElement(meshes[1], {
+      key: 1,
+      // scale: [0.5, 0.5, 0.5],
+      color: colors[Math.floor(Math.random() * colors.length)],
+    }),
+
+    React.createElement(meshes[2], {
+      key: 2,
+      // scale: [0.5, 0.5, 0.5],
+
+      color: colors[Math.floor(Math.random() * colors.length)],
+    }),
   ]);
   useEffect(() => {
     const handleKeyDown = debounce((e: KeyboardEvent) => {

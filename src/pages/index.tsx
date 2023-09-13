@@ -26,6 +26,7 @@ function Scene({ isPaused = false }): JSX.Element {
           shadow-camera-bottom={-500} // Adjust the boundaries of the shadow frustum
         />
         {/* <Debug color="black" scale={1}> */}
+
         <Ground
           position={[0, -5, 0]}
           rotation={[-Math.PI / 2, 0, 0]}
