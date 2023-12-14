@@ -4,7 +4,7 @@ import React from "react";
 
 import { useLegos } from "../hooks/useLegos";
 import { Ground } from "../components/Ground";
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls, Text } from "@react-three/drei";
 import * as THREE from "three";
 
 function Scene({ isPaused = false }): JSX.Element {
@@ -38,6 +38,16 @@ function Scene({ isPaused = false }): JSX.Element {
         ))}
         {/* </Debug> */}
       </Physics>
+
+      <Text
+        color="white" // Text color
+        fontSize={5} // Size of the text
+        position={[0, 10, 0]} // Position in the scene
+        anchorX="center" // Horizontal anchor
+        anchorY="middle" // Vertical anchor
+      >
+        Press 1 2 or 3 to add more legos!
+      </Text>
 
       <ambientLight intensity={1} />
       <OrbitControls
