@@ -41,7 +41,7 @@ function Scene({ isPaused = false }): JSX.Element {
 
       <Text
         color="white" // Text color
-        fontSize={5} // Size of the text
+        fontSize={2.5} // Size of the text
         position={[0, 10, -5]} // Position in the scene
         anchorX="center" // Horizontal anchor
         anchorY="middle" // Vertical anchor
