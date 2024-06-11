@@ -40,11 +40,11 @@ function Scene({ isPaused = false }): JSX.Element {
       </Physics>
 
       <Text
-        color="white" // Text color
-        fontSize={2.5} // Size of the text
-        position={[0, 10, -5]} // Position in the scene
-        anchorX="center" // Horizontal anchor
-        anchorY="middle" // Vertical anchor
+        color="white" 
+        fontSize={2.5} 
+        position={[0, 10, -5]} 
+        anchorX="center" 
+        anchorY="middle" 
       >
         Press 1 2 or 3 to add more legos!
       </Text>
