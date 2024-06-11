@@ -12,7 +12,7 @@ function Scene({ isPaused = false }): JSX.Element {
 
   return (
     <>
-      <Physics gravity={[0, -0.1, 0]} isPaused={isPaused}>
+      <Physics gravity={[0, -5, 0]} isPaused={isPaused}>
         <directionalLight
           castShadow
           intensity={2}
