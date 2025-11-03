@@ -16,7 +16,14 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Lobster', cursive;
 
     /* Gradient base colors */
-    background: linear-gradient(120deg, #ff5f6d, #ffc371, #42e695, #3bb2b8, #7b42f6);
+    background: linear-gradient(
+    120deg,
+    #ffd6d6,
+    #ffe8c8,
+    #e1ffd6,
+    #d6f7ff,
+    #e5d6ff
+  );
     background-size: 400% 400%;
     animation: waveGradient 12s ease-in-out infinite;
   }
