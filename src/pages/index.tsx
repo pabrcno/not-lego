@@ -6,6 +6,7 @@ import { useLegos } from "../hooks/useLegos";
 import { Ground } from "../components/Ground";
 import { OrbitControls} from "@react-three/drei";
 import * as THREE from "three";
+import {ControlCard, ControlTitle, ControlsGrid } from "../styles/general.styles"
 
 function Scene({ isPaused = false }): JSX.Element {
   const { legos } = useLegos();
@@ -48,16 +49,7 @@ function Scene({ isPaused = false }): JSX.Element {
           RIGHT: THREE.MOUSE.ROTATE,
         }}
       />
-      <div className="absolute top-4 left-4 z-10 px-4 py-3 rounded-2xl shadow-lg w-64 border border-white/10">
-          <h2 className="font-bold text-lg mb-2 text-center">Controls</h2>
-          <div className="grid grid-cols-2 gap-x-2 text-sm">
-              <span>1</span><span>Add brick type 1</span>
-              <span>2</span><span>Add brick type 2</span>
-              <span>3</span><span>Add brick type 3</span>
-              <span>A</span><span>Rotate left</span>
-              <span>D</span><span>Rotate right</span>
-          </div>
-      </div>
+     
     </>
   );
 }
@@ -68,6 +60,17 @@ export default function MainScreen() {
       <Canvas camera={{ fov: 70, position: [0, 0, 15] }} shadows>
         <Scene />
       </Canvas>
+      <ControlCard>
+        <ControlTitle>Controls</ControlTitle>
+        <ControlsGrid>
+          <span>1</span><span>Add brick type 1</span>
+          <span>2</span><span>Add brick type 2</span>
+          <span>3</span><span>Add brick type 3</span>
+          <span>A</span><span>Rotate left</span>
+          <span>D</span><span>Rotate right</span>
+        </ControlsGrid>
+    </ControlCard>
+
     </div>
   );
 }
