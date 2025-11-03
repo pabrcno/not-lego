@@ -9,15 +9,23 @@ const GlobalStyle = createGlobalStyle`
     font-style: normal;
     font-display: auto; 
   }
-
   body {
     margin: 0;
     padding: 0;
-    background-color: #505050
-    ;
-    overflow-x: hidden;
-    overflow-y: hidden;
+    overflow: hidden;
     font-family: 'Lobster', cursive;
+
+    /* Gradient base colors */
+    background: linear-gradient(120deg, #ff5f6d, #ffc371, #42e695, #3bb2b8, #7b42f6);
+    background-size: 400% 400%;
+    animation: waveGradient 12s ease-in-out infinite;
+  }
+
+
+  @keyframes waveGradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
   }
 `;
 

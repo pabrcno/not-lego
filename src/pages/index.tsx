@@ -4,7 +4,7 @@ import React from "react";
 
 import { useLegos } from "../hooks/useLegos";
 import { Ground } from "../components/Ground";
-import { OrbitControls, Text } from "@react-three/drei";
+import { OrbitControls} from "@react-three/drei";
 import * as THREE from "three";
 
 function Scene({ isPaused = false }): JSX.Element {
@@ -39,16 +39,7 @@ function Scene({ isPaused = false }): JSX.Element {
         {/* </Debug> */}
       </Physics>
 
-      <Text
-        color="white" 
-        fontSize={2.5} 
-        position={[0, 10, -5]} 
-        anchorX="center" 
-        anchorY="middle" 
-      >
-        Press 1 2 or 3 to add more legos!
-      </Text>
-
+    
       <ambientLight intensity={1} />
       <OrbitControls
         enableRotate={true}
@@ -57,6 +48,16 @@ function Scene({ isPaused = false }): JSX.Element {
           RIGHT: THREE.MOUSE.ROTATE,
         }}
       />
+      <div className="absolute top-4 left-4 z-10 px-4 py-3 rounded-2xl shadow-lg w-64 border border-white/10">
+          <h2 className="font-bold text-lg mb-2 text-center">Controls</h2>
+          <div className="grid grid-cols-2 gap-x-2 text-sm">
+              <span>1</span><span>Add brick type 1</span>
+              <span>2</span><span>Add brick type 2</span>
+              <span>3</span><span>Add brick type 3</span>
+              <span>A</span><span>Rotate left</span>
+              <span>D</span><span>Rotate right</span>
+          </div>
+      </div>
     </>
   );
 }

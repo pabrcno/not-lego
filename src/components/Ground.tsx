@@ -22,7 +22,14 @@ export const Ground = ({ color, ...props }: GroundProps): JSX.Element => {
 
   return (
     <Plane args={[1000, 1000]} ref={ref as React.Ref<Mesh>} receiveShadow>
-      <meshStandardMaterial color={color} />
+      <meshPhysicalMaterial 
+        color={color ?? "#A3B9FF"} 
+        metalness={0.25} 
+        roughness={0.2} 
+        clearcoat={0.8} 
+        clearcoatRoughness={0.1} 
+        envMapIntensity={1.2}
+      />
     </Plane>
   );
 };
