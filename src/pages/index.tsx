@@ -31,7 +31,7 @@ function Scene({ isPaused = false }): JSX.Element {
         <Ground
           position={[0, -5, 0]}
           rotation={[-Math.PI / 2, 0, 0]}
-          color="#101010"
+          
         />
 
         {legos.map((lego, index) => (
